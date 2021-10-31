@@ -1,0 +1,236 @@
+<!doctype html>
+
+<head>
+    <title> Glide.io </title>
+</head>
+
+<body>
+    <canvas id="gameCanvas" width="1280" height="720"></canvas>
+    <p>The Controls To This Game Is Pretty Basic Its Just Spacebar To Jump, The Goal Is to Doge The Green Pipe And Everytime You Do So You Get One Score Added </p>
+
+    <!--
+    <img class='Pipe' src="Images/5372465_200x130.png" alt='Pipes For FlappyBird To Doge'>
+    <img class='Pipe' src="Images/5372465_200x130.png" alt='Pipes For FlappyBird To Doge'>
+    <img class='Pipe' src="Images/5372465_200x130.png" alt='Pipes For FlappyBird To Doge'>
+    <img class='Pipe' src="Images/5372465_200x130.png" alt='Pipes For FlappyBird To Doge'>
+    <img class='Pipe' src="Images/5372465_200x130.png" alt='Pipes For FlappyBird To Doge'>
+    <img class='Pipe' src="Images/5372465_200x130.png" alt='Pipes For FlappyBird To Doge'>
+    <img class='Pipe' src="Images/5372465_200x130.png" alt='Pipes For FlappyBird To Doge'>
+-->
+
+    <!--
+<svg width="400" height="110">
+  <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+</svg>
+-->
+
+    <script>
+        var canvas, canvasContext;
+        window.onload = function() {
+            canvas = document.getElementById('gameCanvas');
+            canvasContext = canvas.getContext('2d');
+
+            document.addEventListener('keydown', keyPressed);
+            document.addEventListener('keyup', keyReleased);
+
+            setInterval(mainloop, 1000 / 50);
+        }
+        var userName = '';
+        while(userName == '' || userName == null){
+            userName = prompt('whats your name?')//jimmy
+        }
+        var speed = 0;
+        var diffculty = '';
+        var pass = false;
+        while(pass == false){
+            diffculty = prompt('how hard do you want it?','easy');
+            if(diffculty != null){
+                pass = true;
+            }
+            
+        }
+        var playerXpos =50;
+        var playerYpos = 50;
+        var playerXspeed = 5;
+        var playerYspeed = 4;
+        const PlAYER_SIZE = 20;
+        var yVel = 0;
+
+        const SPACE = 32;
+        var spacePressed = false;
+        var cPressed = false;
+
+        var pipeXpos = 300;
+        var pipeYpos = 279;
+        var pipeXspeed = 5;
+        var pipeYspeed = 4;
+        const PIPE_SIZE = 600;
+        const PIPE_WIDTH = 20;
+        const PIPE_HEIGHT = 800;
+        var yVel = 0;
+        const ENEMY_SIZE = 0;    
+
+        var starting = true;
+        var gamerun = true;
+        var score = 0;
+
+        function mainloop() {
+            if (gamerun){
+//                for(var i = 0; i < 27; i++){
+//                    
+//                }
+                   
+            colorRect(0, 0, canvas.width, canvas.height, 'black');
+            colorRect(playerXpos, playerYpos, PlAYER_SIZE, PlAYER_SIZE, 'red');
+//            colorRect(enemyXpos, enemyYpos, ENEMY_WIDTH1, enemyHeight1, 'blue');
+            
+            if(starting){
+               enemYpos = canvas.height / 2;
+                for (var i = 0; i <10; i++){
+                    makeEnemy();
+                }
+                starting = false;
+            }
+            drawEnemies();
+            playerMove();
+            moveEnemies();
+             }
+         else {
+            colorRect(0, 0, canvas.width, canvas.height, 'white');
+            colorText('score: ' + score , 100 , 50, '40px Arial','white')
+            }
+        }
+       
+         // end func        
+
+
+        function playerMove() {
+            playerYpos += yVel;
+            yVel += 0.2;
+
+            // console.log(playerYpos + ' : ' + yVel)
+            
+            if (spacePressed) {
+                yVel = -2;
+            }
+
+            playerXpos = canvas.width / 80;
+
+            if (playerYpos > canvas.height) {
+                playerYpos = 0;
+            }
+
+            if (playerYpos <= 0) {
+                playerYpos = 0;
+                yVel = 0.2;
+            }
+
+//            enemyXpos = canvas.width / 6
+//            if (enemyYpos > canvas.height)
+//                enemyYpos = 0
+
+        } //end func
+
+        function keyPressed(evt) {
+            if (evt.keyCode == SPACE) {
+                spacePressed = true;
+            }
+            //            if (evt.keyCode == 67) {
+            //                cPressed = true;
+            //            }
+        } //end func
+
+//        var enemyXpos = 300;
+//        var enemyYpos = 0;
+//        var enemyXspeed = 5;
+//        var enemyYspeed = 5;
+//        const ENEMY_SIZE1 = 600;
+//        const ENEMY_WIDTH1 = 20;
+//        const enemyHeight1 = 800;
+//        var enemyYpos = canvas.height / 2
+//        var yVel = 0;
+
+        var enemyCounter = 0;
+        var setCounter = 0;
+        var enemies = [];
+        
+        function makeEnemy() {
+            const ENEMY_WIDTH = 40;
+            var enemyHeight = Math.floor(Math.random()*(canvas.height * 0.50 - canvas.height * 0.3)+ canvas.height*0.3);
+            var enemyXpos = canvas.width + ENEMY_WIDTH * (setCounter * 2.2);
+            var enemyYpos;
+            
+            if(enemyCounter%2 == 0 || enemyCounter == 0){
+               enemyYpos = 0
+            } else {
+                enemyYpos = canvas.height - enemyHeight
+                setCounter++
+            }
+            
+//            function endGame()
+            enemyCounter++;
+            var enemyXspeed = 11;
+            var enemyYspeed = 5;
+            
+            
+            var enemy = {
+                enemyXpos: enemyXpos,
+                enemyYpos: enemyYpos,
+                ENEMY_WIDTH: ENEMY_WIDTH,
+                enemyHeight: enemyHeight,
+                enemyXspeed: enemyXspeed,
+                enemyYspeed: enemyYspeed,
+                ENEMY_SIZE: ENEMY_SIZE
+            }
+            
+            enemies.push(enemy);
+
+        }
+    
+        function drawEnemies(){
+            enemies.forEach(function(e,i,array){
+                colorRect(e.enemyXpos, e.enemyYpos, e.ENEMY_WIDTH, e.enemyHeight, 'green')
+            });
+        }
+        
+        function moveEnemies(){
+            enemies.forEach(function(e,i,array){
+                e.enemyXpos -= e.enemyXspeed;
+                
+                if(e.enemyXpos < 0){
+                    e.enemyXpos = canvas.width - e.ENEMY_WIDTH;
+                    e.enemyHeight = Math.floor(Math.random()*(canvas.height * 0.45 - canvas.height * 0.3)+ canvas.height*0.3);
+                    if(e.enemyYpos < canvas.height/2){
+                        e.enemyYpos = 0
+                    } else {
+                        e.enemyYpos = canvas.height - e. enemyHeight
+                    }
+                }
+                
+                if(playerXpos + PlAYER_SIZE > e.enemyXpos && playerXpos < e.enemyXpos + e.ENEMY_WIDTH 
+                   && playerYpos + PlAYER_SIZE > e.enemyYpos && playerYpos < e.enemyYpos + e.enemyHeight
+                  ){
+                    playerXpos = 1;
+                    playerYpos = 250; 
+                    score++;
+                    console.log('score:' + score);
+                }
+                
+            });
+        }
+
+        function keyReleased(evt) {
+            if (evt.keyCode == SPACE) {
+                spacePressed = false;
+            }
+        }            
+
+        function colorRect(x, y, w, h, c) {
+            canvasContext.fillStyle = c;
+            canvasContext.fillRect(x, y, w, h);
+
+        } // end func
+
+    </script>
+
+</body>
