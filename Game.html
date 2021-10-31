@@ -1,11 +1,11 @@
 <!doctype html>
 
 <head>
-    <title> Video Game</title>
+    <title> Glide.io </title>
 </head>
 
 <body>
-    <canvas id="gameCanvas" width="500" height="600"></canvas>
+    <canvas id="gameCanvas" width="1280" height="720"></canvas>
     <p>The Controls To This Game Is Pretty Basic Its Just Spacebar To Jump, The Goal Is to Doge The Green Pipe And Everytime You Do So You Get One Score Added </p>
 
     <!--
@@ -35,7 +35,20 @@
 
             setInterval(mainloop, 1000 / 50);
         }
-
+        var userName = '';
+        while(userName == '' || userName == null){
+            userName = prompt('whats your name?')//jimmy
+        }
+        var speed = 0;
+        var diffculty = '';
+        var pass = false;
+        while(pass == false){
+            diffculty = prompt('how hard do you want it?','easy');
+            if(diffculty != null){
+                pass = true;
+            }
+            
+        }
         var playerXpos =50;
         var playerYpos = 50;
         var playerXspeed = 5;
@@ -58,34 +71,50 @@
         const ENEMY_SIZE = 0;    
 
         var starting = true;
+        var gamerun = true;
+        var score = 0;
 
         function mainloop() {
-            colorRect(0, 0, canvas.width, canvas.height, 'gray');
+            if (gamerun){
+//                for(var i = 0; i < 27; i++){
+//                    
+//                }
+                   
+            colorRect(0, 0, canvas.width, canvas.height, 'black');
             colorRect(playerXpos, playerYpos, PlAYER_SIZE, PlAYER_SIZE, 'red');
 //            colorRect(enemyXpos, enemyYpos, ENEMY_WIDTH1, enemyHeight1, 'blue');
             
             if(starting){
-                for(var i = 0; i < 10; i++){
+               enemYpos = canvas.height / 2;
+                for (var i = 0; i <10; i++){
                     makeEnemy();
                 }
                 starting = false;
             }
-
-            playerMove();
             drawEnemies();
+            playerMove();
             moveEnemies();
-        } // end func        
+             }
+         else {
+            colorRect(0, 0, canvas.width, canvas.height, 'white');
+            colorText('score: ' + score , 100 , 50, '40px Arial','white')
+            }
+        }
+       
+         // end func        
 
 
         function playerMove() {
             playerYpos += yVel;
             yVel += 0.2;
 
+            // console.log(playerYpos + ' : ' + yVel)
+            
             if (spacePressed) {
-                yVel = -3;
+                yVel = -2;
             }
 
-            playerXpos = canvas.width / 6;
+            playerXpos = canvas.width / 80;
 
             if (playerYpos > canvas.height) {
                 playerYpos = 0;
@@ -127,7 +156,7 @@
         
         function makeEnemy() {
             const ENEMY_WIDTH = 40;
-            var enemyHeight = Math.floor(Math.random()*(canvas.height * 0.45 - canvas.height * 0.3)+ canvas.height*0.3);
+            var enemyHeight = Math.floor(Math.random()*(canvas.height * 0.50 - canvas.height * 0.3)+ canvas.height*0.3);
             var enemyXpos = canvas.width + ENEMY_WIDTH * (setCounter * 2.2);
             var enemyYpos;
             
@@ -138,9 +167,10 @@
                 setCounter++
             }
             
+//            function endGame()
             enemyCounter++;
-            var enemyXspeed = 5;
-            var enemyYspeed = 5
+            var enemyXspeed = 11;
+            var enemyYspeed = 5;
             
             
             var enemy = {
@@ -159,7 +189,7 @@
     
         function drawEnemies(){
             enemies.forEach(function(e,i,array){
-                colorRect(e.enemyXpos, e.enemyYpos, e.ENEMY_WIDTH, e.enemyHeight, 'white')
+                colorRect(e.enemyXpos, e.enemyYpos, e.ENEMY_WIDTH, e.enemyHeight, 'green')
             });
         }
         
@@ -180,7 +210,10 @@
                 if(playerXpos + PlAYER_SIZE > e.enemyXpos && playerXpos < e.enemyXpos + e.ENEMY_WIDTH 
                    && playerYpos + PlAYER_SIZE > e.enemyYpos && playerYpos < e.enemyYpos + e.enemyHeight
                   ){
-                   console.log('hit')
+                    playerXpos = 1;
+                    playerYpos = 250; 
+                    score++;
+                    console.log('score:' + score);
                 }
                 
             });
