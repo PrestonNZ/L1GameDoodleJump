@@ -89,13 +89,11 @@
 
         function mainloop() {
             if (gamerun) {
-                //                for(var i = 0; i < 27; i++){
-                //                    
-                //                }
-
+     
                 colorRect(0, 0, canvas.width, canvas.height, 'black');
-                colorRect(playerXpos, playerYpos, PlAYER_SIZE, PlAYER_SIZE, 'red');
-                //            colorRect(enemyXpos, enemyYpos, ENEMY_WIDTH1, enemyHeight1, 'blue');
+                drawtext('score: ' + score,1158, 50,'30px Arial', 'red');
+                
+                colorRect(ENEMY_SIZE, 'green'); // PIPE
 
                 if (start) {
 
@@ -103,16 +101,22 @@
                     for (var i = 0; i < 10; i++) {
                         makeEnemy();
                         (reset);
-
+                        
+                        
                     }
                     start = false;
                 }
                 drawEnemies();
                 playerMove();
                 moveEnemies();
+                colorRect(playerXpos, playerYpos, PlAYER_SIZE, PlAYER_SIZE, 'red');
             } else {
-                colorRect(0, 0, canvas.width, canvas.height, 'white');
-                colorText('score: ' + score, 100, 50, '40px Arial', 'white')
+                 start = false
+                // colorRect(0, 0, canvas.width, canvas.height, '#FFA500');
+               // colorText('score: ' + score, 100, 50, '40px Arial', '#FFA500')
+            
+                 colorRect(0, 0, canvas.width, canvas.height, 'black');
+                drawText('25px Arial','your dead ' + userName + '\n your score was ' + score,100,300,'red')
             }
         }
 
@@ -121,7 +125,7 @@
 
         function playerMove() {
             playerYpos += yVel;
-            yVel += 0.2;
+            yVel += 0.7;
 
             // console.log(playerYpos + ' : ' + yVel)
 
@@ -214,6 +218,8 @@
                 if (e.enemyXpos < 0) {
                     e.enemyXpos = canvas.width - e.ENEMY_WIDTH;
                     e.enemyHeight = Math.floor(Math.random() * (canvas.height * 0.45 - canvas.height * 0.3) + canvas.height * 0.3);
+                    score++;
+                    console.log('score' + score);
                     if (e.enemyYpos < canvas.height / 2) {
                         e.enemyYpos = 0
                     } else {
@@ -224,10 +230,8 @@
                 if (playerXpos + PlAYER_SIZE > e.enemyXpos && playerXpos < e.enemyXpos + e.ENEMY_WIDTH &&
                     playerYpos + PlAYER_SIZE > e.enemyYpos && playerYpos < e.enemyYpos + e.enemyHeight
                 ) {
-                    playerXpos = 1;
-                    playerYpos = 250;
-                    score++;
-                    console.log('score' + score);
+                    playerXpos = 0 + PlAYER_SIZE;
+                    playerYpos = canvas.height/2;
 
                 }
 
@@ -245,6 +249,13 @@
             canvasContext.fillRect(x, y, w, h);
 
         } // end func
+        
+          function drawtext(msg,x, y,f, c){
+      canvasContext.font = f;
+      canvasContext.fillStyle = c;
+      canvasContext.fillText(msg, x, y);
+          }
+       
 
     </script>
 
